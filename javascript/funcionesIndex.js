@@ -4,7 +4,7 @@ $(document).ready(function mostrarLibros() {
     libros = data.message;
     html = "";
     $("#libros").html(html);
-    $('#nuestrosLibrosNum').html(data.message.length);
+    $("#nuestrosLibrosNum").html(data.message.length);
     for (i = 0; i < data.message.length; i++) {
       html =
         html +
@@ -14,11 +14,11 @@ $(document).ready(function mostrarLibros() {
             <td>${data.message[i].autorLibro}</td>
             <td class='acciones'>
             <button class="btn botonEliminar" data-toggle="modal" data-id="${data.message[i].idLibro}" data-target="#confirmarEliminarLibro">
-            <i class="fas fa-trash"></i>
+            <i class="bi bi-trash-fill"></i>
         </button>
 
         <button class="btn botonTomarPrestado" name="${data.message[i].tituloLibro}" data-id="${data.message[i].idLibro}" title="Tomar prestado">
-            <i class="fas fa-book"></i>
+          <i class="bi bi-book-fill"></i>
         </button>
             </td>
         </tr>`;
@@ -154,9 +154,9 @@ $(document).ready(function mostrarLibros() {
     });
   });
 
-  $('#nuestrosLibros').on('click',function(){
+  $("#nuestrosLibros").on("click", function () {
     mostrarLibros();
-    $('#inputBusqueda').val('');
+    $("#inputBusqueda").val("");
   });
 
   //Gestión de la sesión
@@ -166,7 +166,7 @@ $(document).ready(function mostrarLibros() {
         $("#cerrarSesion").remove();
         $("#panelAdmin").remove();
         $("#tusLibros").remove();
-        $(".acciones").html('').remove();
+        $(".acciones").html("").remove();
       } else {
         usuario = JSON.parse(window.localStorage.getItem("usuario"));
         $("#inicioSesion").remove();
