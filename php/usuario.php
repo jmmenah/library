@@ -12,21 +12,24 @@ $password = htmlspecialchars($_POST['password']) ?? '';
 
 if (!empty($email) && !empty($password)) {
 
-    $stm = $pdo->prepare('INSERT INTO usuarios VALUES (NULL, :email, :passwordUser, "usuario", 0)');
+    $stm = $pdo->prepare('SELECT * FROM Usuarios WHERE emailUsuario = :emailUsuario');
 
     $stm->execute(array(
 
-        ':email' => $email,
-        ':passwordUser' => $password
+        ':emailUsuario' => $email
 
     ));
 
     if ($stm->rowCount() > 0) {
-        echo devolverMensaje('Usuario creado correctamente', 200);
+        
+        $usuario = $stm->fetch(PDO::FETCH_ASSOC);
 
-    }else {
-        echo devolverMensaje('Error al crear el usuario', 500);
+        if ($usuario['passwordUsuario'] === $password)
+            echo devolverMensaje($usuario, 200);
+
     }
+    else
+        echo devolverMensaje('Usuario no encontrado', 500);
 
 }else {
     echo devolverMensaje('Campos vacíos', 500);
