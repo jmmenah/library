@@ -1,8 +1,10 @@
-$(document).ready(() => {
+$(document).ready(function mostrarLibros() {
   //Mostrar libros
   $.get("/biblioteca/php/libros.php", function (data) {
     libros = data.message;
     html = "";
+    $("#libros").html(html);
+    $('#nuestrosLibrosNum').html(data.message.length);
     for (i = 0; i < data.message.length; i++) {
       html =
         html +
@@ -152,12 +154,18 @@ $(document).ready(() => {
     });
   });
 
+  $('#nuestrosLibros').on('click',function(){
+    mostrarLibros();
+    $('#inputBusqueda').val('');
+  });
+
   //Gestión de la sesión
   $(function () {
     $(window).ready(function () {
       if (window.localStorage.getItem("usuario") == null) {
         $("#cerrarSesion").remove();
         $("#panelAdmin").remove();
+        $("#tusLibros").remove();
         $(".acciones").html('').remove();
       } else {
         usuario = JSON.parse(window.localStorage.getItem("usuario"));
