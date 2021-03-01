@@ -244,7 +244,7 @@
     </div>
 
     <!-- Modal añadir libro -->
-    <div class="modal fade" id="añadirLibro" tabindex="-1">
+    <div class="modal fade" id="modalAñadirLibro" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header bg-success">
@@ -263,7 +263,7 @@
               <label for="tituloLibroInput">Título</label>
               <input
                 type="text"
-                placeholder="Don Quijote de la Mancha"
+                placeholder="El lazarillo de Tormes"
                 class="form-control"
                 id="tituloLibroInput"
               />
@@ -272,7 +272,7 @@
               <label for="autorLibroInput">Autor</label>
               <input
                 type="text"
-                placeholder="Miguel de Cervantes Saavedra"
+                placeholder="Anónimo"
                 class="form-control"
                 id="autorLibroInput"
               />
@@ -296,7 +296,7 @@
               <label for="generoLibroInput">Género</label>
               <input
                 type="text"
-                placeholder="Accion|Comedia|..."
+                placeholder="Infantil Comedia ..."
                 class="form-control"
                 id="generoLibroInput"
               />
@@ -305,7 +305,7 @@
               <label for="imagenLibroInput">URL de la imagen</label>
               <input
                 type="text"
-                placeholder="https://url.com/imagen"
+                placeholder="https://enlace.com"
                 class="form-control"
                 id="imagenLibroInput"
               />
@@ -332,7 +332,7 @@
     </div>
 
     <!-- Modal para eliminar usuarios -->
-    <div class="modal fade" id="eliminarUsuarios" tabindex="-1">
+    <div class="modal fade" id="modalEliminarUsuar" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -368,25 +368,17 @@
     >
       <button
         class="btn btn-outline-success mr-2"
-        id="añadirLibroBoton"
+        id="añadirLibroBn"
         data-toggle="modal"
-        data-target="#añadirLibro"
+        data-target="#modalAñadirLibro"
       >
         Añadir libro
       </button>
       <button
-        class="btn btn-outline-info mr-2"
-        id="añadirUsuarioBoton"
-        data-toggle="modal"
-        data-target=""
-      >
-        Añadir usuario
-      </button>
-      <button
         class="btn btn-outline-danger"
-        id="eliminarUsuarioBoton"
+        id="eliminarUsuarioBn"
         data-toggle="modal"
-        data-target="#eliminarUsuarios"
+        data-target="#modalEliminarUsuar"
       >
         Eliminar usuario
       </button>

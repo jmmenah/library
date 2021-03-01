@@ -65,6 +65,18 @@ $(document).ready(function () {
     devolverLibro(idLibro);
   });
 
+  //Añadir libro
+
+  $("#añadirLibro").click(function () {
+    añadirLibro();
+  });
+
+  //Eliminar usuario
+
+  $("#eliminarUsuarioBn").click(function () {
+    mostrarUsuarios();
+  });
+
   //Validación formulario de registro e incio
   $(function () {
     var forms = document.getElementsByClassName("needs-validation");

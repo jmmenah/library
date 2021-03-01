@@ -10,7 +10,7 @@ $idUsuario = htmlentities($_POST['idUsuario']) ?? '';
 if (!empty($idUsuario)) {
 
 
-    $stm = $pdo->prepare("DELETE FROM Usuarios WHERE idUsuario = :idUsuario");
+    $stm = $pdo->prepare("DELETE FROM usuarios WHERE idUsuario = :idUsuario");
     
     $stm->execute(array(
         ':idUsuario' => $idUsuario

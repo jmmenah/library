@@ -215,3 +215,65 @@ function devolverLibro(idLibro) {
     });
 
 }
+
+function mostrarUsuarios() {
+
+    $.get(`/biblioteca/php/usuarios.php`, function(data) {
+
+        if (data.status == 200) {
+
+            let contenido = data.message.map(({emailUsuario, rolUsuario, idUsuario}) => {
+                return `
+                
+                <tr>
+                    <td>${emailUsuario}</td>
+                    <td>${rolUsuario}</td>
+                    <td>
+
+                        <button class="btn" onclick="eliminarUsuario(${idUsuario})">
+                        <i class="bi bi-trash-fill"></i>
+                        </button>
+                    
+                    </td>
+                </tr>
+                
+                `;
+            }).join('');
+
+            $('#usuarios').html(`
+            
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Eliminar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        ${contenido}
+                    </tbody>
+                </table>
+
+            
+            `);
+
+        }
+
+    });
+
+}
+
+function eliminarUsuario(idUsuario) {
+
+    $.post(`/biblioteca/php/eliminarUsuario.php`, {idUsuario: idUsuario}, function(data) {
+
+        if (data.status == 200) {
+            alert(data.message);
+            window.location.reload();
+        }else alert(data.message);
+
+    });
+
+}
