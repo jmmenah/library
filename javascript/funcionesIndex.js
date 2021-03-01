@@ -50,9 +50,12 @@ $(document).ready(function () {
 
   //Eliminar libro
 
+  $(document).on("click", ".botonEliminar", function () {
+    idLibro = $(this).data("id");
+  });
+
   $("#modalEliminar").click(function (e) {
     if (e.target.id === "#eliminarLibro") {
-      idLibro = $(this).data("id");
       eliminarLibro(idLibro);
     }
   });

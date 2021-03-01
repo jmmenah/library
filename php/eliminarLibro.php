@@ -10,7 +10,7 @@ $idLibro = htmlentities($_GET['idLibro']) ?? '';
 if (!empty($idLibro)) {
 
 
-    $stm = $pdo->prepare("DELETE FROM Libros WHERE idLibro = :idLibro");
+    $stm = $pdo->prepare("DELETE FROM libros WHERE idLibro = :idLibro");
     
     $stm->execute(array(
         ':idLibro' => $idLibro

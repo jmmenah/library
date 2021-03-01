@@ -175,55 +175,52 @@ function obtenerLibrosPrestados() {
 function diasRestantes(fecha) {
   let actual = new Date();
 
-  // To calculate the time difference of two dates
   let Difference_In_Time = fecha.getTime() - actual.getTime();
 
-  // To calculate the no. of days between two dates
   return Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
 }
 
 function eliminarLibro(id) {
   usuario = JSON.parse(window.localStorage.getItem("usuario"));
 
-  if (usuario !== "administrador") {
+  if (usuario === null) {
     alert("Debes ser administrador para realizar esta acción");
   } else {
-    $.get(
-      `/biblioteca/php/eliminarLibro.php`,
-      { idLibro: id },
-      function (data) {
-        if (data.status == 200) window.location.reload();
-        else alert("Error al borrar");
-      }
-    );
+    if (usuario.rol == "administrador") {
+      $.get(
+        `/biblioteca/php/eliminarLibro.php`,
+        { idLibro: id },
+        function (data) {
+          if (data.status == 200) window.location.reload();
+          else alert("Error al borrar");
+        }
+      );
+    } else {
+      alert("Debes ser administrador para realizar esta acción");
+    }
   }
 }
 
 function devolverLibro(idLibro) {
+  $.get(
+    `/biblioteca/php/devolucion.php`,
+    { idUsuario: usuario.id, idLibro: idLibro },
+    function (data) {
+      if (data.status == 200) {
+        alert(data.message);
 
-    $.get(`/biblioteca/php/devolucion.php`, {idUsuario: usuario.id, idLibro: idLibro}, function(data) {
-    
-        if (data.status == 200) {
-        
-            alert(data.message);
-
-            window.location.reload();
-
-        }
-
-
-    });
-
+        window.location.reload();
+      }
+    }
+  );
 }
 
 function mostrarUsuarios() {
-
-    $.get(`/biblioteca/php/usuarios.php`, function(data) {
-
-        if (data.status == 200) {
-
-            let contenido = data.message.map(({emailUsuario, rolUsuario, idUsuario}) => {
-                return `
+  $.get(`/biblioteca/php/usuarios.php`, function (data) {
+    if (data.status == 200) {
+      let contenido = data.message
+        .map(({ emailUsuario, rolUsuario, idUsuario }) => {
+          return `
                 
                 <tr>
                     <td>${emailUsuario}</td>
@@ -238,9 +235,10 @@ function mostrarUsuarios() {
                 </tr>
                 
                 `;
-            }).join('');
+        })
+        .join("");
 
-            $('#usuarios').html(`
+      $("#usuarios").html(`
             
 
                 <table class="table">
@@ -258,22 +256,19 @@ function mostrarUsuarios() {
 
             
             `);
-
-        }
-
-    });
-
+    }
+  });
 }
 
 function eliminarUsuario(idUsuario) {
-
-    $.post(`/biblioteca/php/eliminarUsuario.php`, {idUsuario: idUsuario}, function(data) {
-
-        if (data.status == 200) {
-            alert(data.message);
-            window.location.reload();
-        }else alert(data.message);
-
-    });
-
+  $.post(
+    `/biblioteca/php/eliminarUsuario.php`,
+    { idUsuario: idUsuario },
+    function (data) {
+      if (data.status == 200) {
+        alert(data.message);
+        window.location.reload();
+      } else alert(data.message);
+    }
+  );
 }
