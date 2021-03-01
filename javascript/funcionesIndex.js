@@ -1,95 +1,69 @@
-$(document).ready(function mostrarLibros() {
-  //Mostrar libros
-  $.get("/biblioteca/php/libros.php", function (data) {
-    libros = data.message;
-    html = "";
-    $("#libros").html(html);
-    $("#nuestrosLibrosNum").html(data.message.length);
-    for (i = 0; i < data.message.length; i++) {
-      html =
-        html +
-        `<tr>
-            <td><a class="btn" href="verLibro.html?id=${data.message[i].idLibro}" title="Ver libro"><img src='${data.message[i].imagenLibro}' style='max-height:100px'></a></td>
-            <td>${data.message[i].tituloLibro}</td>
-            <td>${data.message[i].autorLibro}</td>
-            <td class='acciones'>
-            <button class="btn botonEliminar" data-toggle="modal" data-id="${data.message[i].idLibro}" data-target="#confirmarEliminarLibro">
-            <i class="bi bi-trash-fill"></i>
-        </button>
-
-        <button class="btn botonTomarPrestado" name="${data.message[i].tituloLibro}" data-id="${data.message[i].idLibro}" title="Tomar prestado">
-          <i class="bi bi-book-fill"></i>
-        </button>
-            </td>
-        </tr>`;
-    }
-    if (data.status == 500) {
-      html = "";
-    }
-    html = html + "</tbody>";
-    $("#libros").append(html);
-  });
+$(document).ready(function () {
+  let usuario;
+  mostrarLibros();
 
   //Busqueda de libros
 
   $("#inputBusqueda").keyup(function () {
     buscarLibro($(this).val());
   });
-  function buscarLibro(libro) {
-    let tipoBusqueda = $("#tipoBusqueda").val();
 
-    let librosResultado = [];
+  //Prestar libro
 
-    let buscar = true;
+  $(document).on("click", ".botonPrestar", function () {
+    if (usuario == null) {
+      alert("Inicia sesión para conseguir el libro");
+    } else {
+      idLibro = $(this).data("id");
 
-    switch (tipoBusqueda) {
-      case "Titulo":
-        librosResultado = librosCoincidentes("tituloLibro", libro);
-        break;
+      prestamo(idLibro);
 
-      case "Genero":
-        librosResultado = librosCoincidentes("generoLibro", libro);
-        break;
-
-      case "Autor":
-        librosResultado = librosCoincidentes("autorLibro", libro);
-        break;
-
-      case "Puntuacion":
-        librosResultado = librosCoincidentes("puntuacionLibro", libro, true);
-        break;
-
-      default:
-        buscar = false;
-        break;
+      console.log("Tomando prestado");
     }
+  });
 
-    if (buscar) {
-      html = "";
-      $("#libros").text(html);
-      for (i = 0; i < librosResultado.length; i++) {
-        html =
-          html +
-          `<tr>
-                  <td><img src='${librosResultado[i].imagenLibro}' style='max-height:100px'></td>
-                  <td>${librosResultado[i].tituloLibro}</td>
-                  <td>${librosResultado[i].autorLibro}</td>
-                  <td>A</td>
-              </tr>`;
-      }
-      html = html + "</tbody>";
-      $("#libros").append(html);
+  //Obtener libros prestados
+
+  $(document).on("click", "#tusLibros", function () {
+    if (usuario == null) {
+      alert("Inicia sesión para ver tus libros");
+    } else {
+      obtenerLibrosPrestados();
     }
-  }
+  });
 
-  function librosCoincidentes(busqueda, libro, puntuacion = false) {
-    if (puntuacion)
-      return libros.filter((element) => element[busqueda] == libro);
-    else
-      return libros.filter((element) =>
-        element[busqueda].toLowerCase().includes(libro.toLowerCase())
-      );
-  }
+  $("#nuestrosLibros").on("click", function () {
+    let html = `<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Imagen</th>
+        <th scope="col">Título</th>
+        <th scope="col">Autor</th>
+        <th class="acciones" scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="libros"></tbody>
+    </table>`;
+    $("#info").html(html);
+    mostrarLibros();
+  });
+
+  //Eliminar libro
+
+  $("#modalEliminar").click(function (e) {
+    if (e.target.id === "#eliminarLibro") {
+      idLibro = $(this).data("id");
+      eliminarLibro(idLibro);
+    }
+  });
+
+  //Devolver libro
+
+  $("#info").on("click", ".devolverLibro", function () {
+    idLibro = $(this).data("id");
+
+    devolverLibro(idLibro);
+  });
 
   //Validación formulario de registro e incio
   $(function () {
@@ -166,17 +140,18 @@ $(document).ready(function mostrarLibros() {
         $("#cerrarSesion").remove();
         $("#panelAdmin").remove();
         $("#tusLibros").remove();
-        $(".acciones").html("").remove();
       } else {
         usuario = JSON.parse(window.localStorage.getItem("usuario"));
         $("#inicioSesion").remove();
-        usuario.rol == "administrador" ? "" : $("#panelAdmin").remove();
+        if (usuario.rol !== "administrador") {
+          $("#panelAdmin").remove();
+        }
       }
-    });
 
-    $("#cerrarSesion").click(function () {
-      window.localStorage.removeItem("usuario");
-      window.location = "/biblioteca/index.html";
+      $("#cerrarSesion").click(function () {
+        window.localStorage.removeItem("usuario");
+        window.location = "/biblioteca/index.html";
+      });
     });
   });
 });

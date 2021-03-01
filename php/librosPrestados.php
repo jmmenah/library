@@ -11,7 +11,7 @@ $idUsuario = htmlspecialchars($_GET['idUsuario']) ?? '';
 
 if (!empty($idUsuario)) {
 
-    $stm = $pdo->prepare('SELECT Libros.idLibro, tituloLibro, fechaDevolver FROM Libros_prestados INNER JOIN Libros ON Libros_prestados.idLibro = Libros.idLibro WHERE Libros_prestados.idUsuario = :idUsuario');
+    $stm = $pdo->prepare('SELECT Libros.idLibro, tituloLibro, fechaDevolver FROM librosprestados INNER JOIN Libros ON librosprestados.idLibro = Libros.idLibro WHERE librosprestados.idUsuario = :idUsuario');
 
     $stm->execute(array(
 

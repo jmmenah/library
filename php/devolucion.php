@@ -12,7 +12,7 @@ $idUsuario = htmlspecialchars($_GET['idUsuario']) ?? '';
 
 if (!empty($idUsuario) && !empty($idLibro)) {
 
-    $stm = $pdo->prepare("DELETE FROM Libros_prestados WHERE idUsuario = :idUsuario AND idLibro = :idLibro");
+    $stm = $pdo->prepare("DELETE FROM librosprestados WHERE idUsuario = :idUsuario AND idLibro = :idLibro");
 
     $stm->execute(array(
 

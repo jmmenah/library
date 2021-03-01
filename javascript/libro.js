@@ -11,7 +11,6 @@ $(function () {
         let usuario = window.localStorage.getItem("usuario");
 
 
-        // Comprobamos si es un Invitado o no para poder añadir comentarios
         if (usuario == null) {
             $('#comentariosAcciones').html('<p>Inicia sesión para dejar un comentario</p>');
         
@@ -32,7 +31,6 @@ $(function () {
             `);
         }
 
-        // Comprueba los caracteres restantes del comentario
         $('#caracteresRestantes').text(`${caracteresRestantes} caracteres restantes`);
 
         $('#comentarioTextArea').keyup(function () {

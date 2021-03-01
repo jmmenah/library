@@ -15,7 +15,7 @@ if (!empty($idUsuario) && !empty($idLibro)) {
     $actual = date('Y-m-d');
     $fechaDevolver = date("Y-m-d", strtotime ($actual . "+ 1 weeks"));
 
-    $stm = $pdo->prepare("INSERT INTO Libros_prestados VALUES (:idUsuario, :idLibro, :fechaDevolver)");
+    $stm = $pdo->prepare("INSERT INTO librosprestados VALUES (:idUsuario, :idLibro, :fechaDevolver)");
 
     $stm->execute(array(
 
@@ -29,7 +29,7 @@ if (!empty($idUsuario) && !empty($idLibro)) {
         
         $libros = $stm->fetchAll(PDO::FETCH_ASSOC);
 
-        echo devolverMensaje('Libro en tu biblioteca virtual', 200);
+        echo devolverMensaje('Libro prestado', 200);
 
     }
     else
