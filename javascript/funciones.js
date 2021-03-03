@@ -272,3 +272,31 @@ function eliminarUsuario(idUsuario) {
     }
   );
 }
+
+function añadirLibro() {
+
+  $('.btn').prop('disabled', true);
+
+  let titulo = $('#tituloLibroInput').val();
+  let autor = $('#autorLibroInput').val();
+  let descripcion = $('#descripcionLibroInput').val();
+  let puntuacion = $('#puntuacionLibroInput').val();
+  let genero = $('#generoLibroInput').val();
+  let imagen = $('#imagenLibroInput').val();
+
+  $.post(`nuevoLibro.php`, {tituloLibro: titulo, autorLibro: autor, descripcionLibro: descripcion, puntuacionLibro: puntuacion, generoLibro: genero, imagenLibro: imagen}, function(data) {
+
+
+      if (data.status === 200) {
+
+          alert('Libro añadido correctamente');
+          window.location.reload();
+
+      }
+
+      $('.btn').prop('disabled', false);
+
+
+  });
+
+}

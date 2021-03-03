@@ -155,11 +155,13 @@ $(document).ready(function () {
         $("#cerrarSesion").remove();
         $("#panelAdmin").remove();
         $("#tusLibros").remove();
+        $(".acciones").remove();
       } else {
         usuario = JSON.parse(window.localStorage.getItem("usuario"));
         $("#inicioSesion").remove();
         if (usuario.rol !== "administrador") {
           $("#panelAdmin").remove();
+          $(".botonEliminar").remove();
         }
       }
 
