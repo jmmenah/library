@@ -297,7 +297,7 @@ function añadirLibro() {
   let genero = $('#generoLibroInput').val();
   let imagen = $('#imagenLibroInput').val();
 
-  $.post(`nuevoLibro.php`, {tituloLibro: titulo, autorLibro: autor, descripcionLibro: descripcion, puntuacionLibro: puntuacion, generoLibro: genero, imagenLibro: imagen}, function(data) {
+  $.post(`/biblioteca/php/nuevoLibro.php`, {tituloLibro: titulo, autorLibro: autor, descripcionLibro: descripcion, puntuacionLibro: puntuacion, generoLibro: genero, imagenLibro: imagen}, function(data) {
 
 
       if (data.status === 200) {

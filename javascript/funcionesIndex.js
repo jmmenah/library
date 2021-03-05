@@ -156,5 +156,4 @@ $(document).ready(function () {
     $("#inputBusqueda").val("");
   });
 
-  //Gestión de la sesión
 });
