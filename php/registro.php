@@ -12,7 +12,7 @@ $password = htmlspecialchars($_POST['password']) ?? '';
 
 if (!empty($email) && !empty($password)) {
 
-    $stm = $pdo->prepare('INSERT INTO usuarios VALUES (NULL, :email, :passwordUser, "usuario", 0)');
+    $stm = $pdo->prepare('INSERT INTO usuarios VALUES (NULL, :email, :passwordUser, "usuario", 0, NULL)');
 
     $stm->execute(array(
 

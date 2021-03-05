@@ -1,6 +1,10 @@
 $(document).ready(function () {
   let usuario;
   mostrarLibros();
+  gestionSesion();
+  if(usuario!=null){
+    obtenerLibrosPrestados();
+  }
 
   //Busqueda de libros
 
@@ -17,6 +21,7 @@ $(document).ready(function () {
       idLibro = $(this).data("id");
 
       prestamo(idLibro);
+      obtenerLibrosPrestados();
 
       console.log("Tomando prestado");
     }
@@ -131,14 +136,17 @@ $(document).ready(function () {
     });
 
     //Registro
-    $("#botonRegistrarse").click(function (e) {
+    $("#botonRegistro").on('click',function (e) {
       e.preventDefault();
 
       $.post(
         "/biblioteca/php/registro.php",
         $("#formularioRegistro").serialize()
-      ).done(function (data) {
-        alert(res.message.emailUsuario);
+        ).done(function (data) {
+        if (data.status === 200) {
+        alert("Usuario registrado");
+        window.location.reload();
+        }
       });
     });
   });
@@ -149,26 +157,4 @@ $(document).ready(function () {
   });
 
   //Gestión de la sesión
-  $(function () {
-    $(window).ready(function () {
-      if (window.localStorage.getItem("usuario") == null) {
-        $("#cerrarSesion").remove();
-        $("#panelAdmin").remove();
-        $("#tusLibros").remove();
-        $(".acciones").remove();
-      } else {
-        usuario = JSON.parse(window.localStorage.getItem("usuario"));
-        $("#inicioSesion").remove();
-        if (usuario.rol !== "administrador") {
-          $("#panelAdmin").remove();
-          $(".botonEliminar").remove();
-        }
-      }
-
-      $("#cerrarSesion").click(function () {
-        window.localStorage.removeItem("usuario");
-        window.location = "/biblioteca/index.html";
-      });
-    });
-  });
 });

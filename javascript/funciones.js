@@ -28,6 +28,7 @@ function mostrarLibros() {
     }
     html = html + "</tbody>";
     $("#libros").append(html);
+    gestionSesion();
   });
 }
 
@@ -70,11 +71,20 @@ function buscarLibro(libro) {
                   <td><img src='${librosResultado[i].imagenLibro}' style='max-height:100px'></td>
                   <td>${librosResultado[i].tituloLibro}</td>
                   <td>${librosResultado[i].autorLibro}</td>
-                  <td>A</td>
+                  <td class='acciones'>
+              <button class="btn botonEliminar" data-toggle="modal" data-id="${librosResultado[i].idLibro}" data-target="#modalEliminar">
+              <i class="bi bi-trash-fill"></i>
+          </button>
+  
+          <button class="btn botonPrestar" name="${librosResultado[i].tituloLibro}" data-id="${librosResultado[i].idLibro}" title="Tomar prestado">
+            <i class="bi bi-book-fill"></i>
+          </button>
+              </td>
               </tr>`;
     }
     html = html + "</tbody>";
     $("#libros").append(html);
+    gestionSesion();
   }
 }
 
@@ -119,8 +129,11 @@ function obtenerLibrosPrestados() {
                         </thead>
                     <tbody>
                 `;
-
+          if(usuario==null){
+            console.log('No hay usuario')
+          }else{
           $("#tusLibrosNum").html(data.message.length);
+          }
 
           data.message.forEach((element) => {
             let colorFila = "";
@@ -299,4 +312,29 @@ function añadirLibro() {
 
   });
 
+};
+
+function gestionSesion() {
+  $(window).ready(function () {
+    if (window.localStorage.getItem("usuario") == null) {
+      $("#cerrarSesion").remove();
+      $("#panelAdmin").remove();
+      $("#tusLibros").remove();
+      $(".acciones").remove();
+      $(".botonEliminar").remove();
+      $(".botonPrestar").remove();
+    } else {
+      usuario = JSON.parse(window.localStorage.getItem("usuario"));
+      $("#inicioSesion").remove();
+      if (usuario.rol !== "administrador") {
+        $("#panelAdmin").remove();
+        $(".botonEliminar").remove();
+      }
+    }
+
+    $("#cerrarSesion").click(function () {
+      window.localStorage.removeItem("usuario");
+      window.location = "/biblioteca/index.html";
+    });
+  });
 }
