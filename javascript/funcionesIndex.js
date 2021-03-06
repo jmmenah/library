@@ -1,10 +1,12 @@
 $(document).ready(function () {
-  let usuario;
+
   mostrarLibros();
   gestionSesion();
   if(usuario!=null){
     obtenerLibrosPrestados();
   }
+  administrarMulta();
+  obtenerMulta();
 
   //Busqueda de libros
 
@@ -15,6 +17,7 @@ $(document).ready(function () {
   //Prestar libro
 
   $(document).on("click", ".botonPrestar", function () {
+    usuario = JSON.parse(window.localStorage.getItem("usuario"));
     if (usuario == null) {
       alert("Inicia sesión para conseguir el libro");
     } else {
@@ -30,6 +33,7 @@ $(document).ready(function () {
   //Obtener libros prestados
 
   $(document).on("click", "#tusLibros", function () {
+    usuario = JSON.parse(window.localStorage.getItem("usuario"));
     if (usuario == null) {
       alert("Inicia sesión para ver tus libros");
     } else {
@@ -154,6 +158,12 @@ $(document).ready(function () {
   $("#nuestrosLibros").on("click", function () {
     mostrarLibros();
     $("#inputBusqueda").val("");
+  });
+
+  $('#realizarCompra').click (function () {
+        
+    multaPagada = true;
+    obtenerMulta();
   });
 
 });
