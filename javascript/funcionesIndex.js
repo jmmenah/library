@@ -1,12 +1,13 @@
 $(document).ready(function () {
 
+  $("#alertas").hide();
   mostrarLibros();
   gestionSesion();
   if(usuario!=null){
     obtenerLibrosPrestados();
+    administrarMulta();
+    obtenerMulta();
   }
-  administrarMulta();
-  obtenerMulta();
 
   //Busqueda de libros
 

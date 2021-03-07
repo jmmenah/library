@@ -247,7 +247,7 @@
     <div class="modal fade" id="modalAñadirLibro" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header bg-success">
+          <div class="modal-header bg-primary">
             <h5 class="modal-title">Añadir libro</h5>
             <button
               type="button"
@@ -454,7 +454,7 @@
     <div class="modal fade" id="pagarMultaModal" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header bg-success text-light">
+          <div class="modal-header bg-primary text-light">
             <h5 class="modal-title" id="exampleModalLabel">Pagar multa</h5>
             <button
               type="button"
@@ -470,7 +470,7 @@
               <div class="form-group col-12 col-md-4">
                 <label for="inputNombre">Nombre</label>
                 <input
-                  placeholder="David"
+                  placeholder="Juan"
                   type="text"
                   class="form-control"
                   id="inputNombre"
@@ -479,7 +479,7 @@
               <div class="form-group col-12 col-md-4">
                 <label for="inputApellidos">Apellidos</label>
                 <input
-                  placeholder="Jiménez Villarejo"
+                  placeholder="Gracía García"
                   type="text"
                   class="form-control"
                   id="inputApellidos"
@@ -501,13 +501,13 @@
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="inputNumeroTarjetaCredito"
-                  >Número tarjeta de crédito</label
+                  >Tarjeta de crédito</label
                 >
                 <div class="input-group">
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="1234 5678 1234 5678"
+                    placeholder="4444 4444 4444 4444"
                     pattern="^[0-9]{4}\s[0-9]{4}\s[0-9]{4}\s[0-9]{4}$"
                     id="inputTarjetaCredito"
                   />
@@ -546,13 +546,10 @@
                 Pagar multa
               </button>
             </div>
-
-            <div class="otroPagoContenedor">
-              <span class="otroPago">o</span>
-            </div>
-
+            <br/>
+            <hr/>
             <div id="smart-button-container">
-              <div style="text-align: center">
+              <div style="text-align: center;">
                 <div id="paypal-button-container"></div>
               </div>
             </div>
@@ -569,6 +566,9 @@
         </div>
       </div>
     </div>
+
+    
+  
 
     
 
@@ -592,42 +592,34 @@
     <script src="/biblioteca/javascript/ordenacion.js"></script>
     <script src="/biblioteca/javascript/libro.js"></script>
 
-    <script
-      src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR"
-      data-sdk-integration-source="button-factory"
-    ></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR" data-sdk-integration-source="button-factory"></script>
     <script>
       function initPayPalButton() {
-        paypal
-          .Buttons({
-            style: {
-              shape: "pill",
-              color: "black",
-              layout: "horizontal",
-              label: "paypal",
-            },
-
-            createOrder: function (data, actions) {
-              return actions.order.create({
-                purchase_units: [
-                  { amount: { currency_code: "EUR", value: 10 } },
-                ],
-              });
-            },
-
-            onApprove: function (data, actions) {
-              return actions.order.capture().then(function (details) {
-                alert(
-                  "Multa pagada por " + details.payer.name.given_name + "!"
-                );
-              });
-            },
-
-            onError: function (err) {
-              console.log(err);
-            },
-          })
-          .render("#paypal-button-container");
+        paypal.Buttons({
+          style: {
+            shape: 'pill',
+            color: 'gold',
+            layout: 'horizontal',
+            label: 'paypal',
+            
+          },
+  
+          createOrder: function(data, actions) {
+            return actions.order.create({
+              purchase_units: [{"description":"Multa","amount":{"currency_code":"EUR","value":10}}]
+            });
+          },
+  
+          onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+              alert('Transaction completed by ' + details.payer.name.given_name + '!');
+            });
+          },
+  
+          onError: function(err) {
+            console.log(err);
+          }
+        }).render('#paypal-button-container');
       }
       initPayPalButton();
     </script>

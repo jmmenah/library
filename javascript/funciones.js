@@ -408,13 +408,17 @@ function obtenerMulta() {
           );
         } else {
           $("#alertas").show();
+          $("#alerta").show();
           $("#alerta").html(
             `Tiene una multa por pasarse el plazo para devolver un libro. Su cuenta queda restringida y no podrá tomar prestados más libros hasta la fecha ${multaHasta} o hasta que no pague 10€. <button class="btn btn-warning" data-toggle="modal" data-target="#pagarMultaModal" data-toggle="tooltip" data-placement="right" title="Primero debe devolver todos los libros pasados de fecha" id="pagarMulta">Pagar</button>`
           );
           $("#pagarMulta").prop("disabled", false);
           $(".botonPrestar").remove();
         }
-      } else $("#alertas").hide();
+      } else {
+        $("#alertas").hide();
+        $("#alerta").hide();
+      }
     }
   );
 }

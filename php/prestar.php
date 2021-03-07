@@ -13,7 +13,7 @@ $idUsuario = htmlspecialchars($_GET['idUsuario']) ?? '';
 if (!empty($idUsuario) && !empty($idLibro)) {
 
     $actual = date('Y-m-d');
-    $fechaDevolver = date("Y-m-d", strtotime ($actual . "- 1 weeks"));
+    $fechaDevolver = date("Y-m-d", strtotime ($actual . "+ 1 weeks"));
 
     $stm = $pdo->prepare("INSERT INTO librosprestados VALUES (:idUsuario, :idLibro, :fechaDevolver)");
 
