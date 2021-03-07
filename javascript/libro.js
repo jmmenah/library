@@ -1,24 +1,22 @@
 const maximoCaracteres = 250;
 let caracteresRestantes = maximoCaracteres;
+let libro;
 
 $(function () {
+  let parametros = new URLSearchParams(window.location.search);
 
-    let parametros = new URLSearchParams(window.location.search);
+  if (parametros.has("id")) {
+    let id = parametros.get("id");
+    let usuario = window.localStorage.getItem("usuario");
 
-    if (parametros.has('id')) {
+    if (usuario == null) {
+      $("#comentariosAcciones").html(
+        "<p>Inicia sesión para dejar un comentario</p>"
+      );
+    } else {
+      usuario = JSON.parse(window.localStorage.getItem("usuario"));
 
-        let id = parametros.get('id');
-        let usuario = window.localStorage.getItem("usuario");
-
-
-        if (usuario == null) {
-            $('#comentariosAcciones').html('<p>Inicia sesión para dejar un comentario</p>');
-        
-        }else {
-
-            usuario = JSON.parse(window.localStorage.getItem("usuario"));
-
-            $('#comentariosAcciones').html(`
+      $("#comentariosAcciones").html(`
             
                 <section id="addComentarioSeccion">
                     <div class="form-group">
@@ -29,28 +27,30 @@ $(function () {
                 </section>
             
             `);
-        }
+    }
 
-        $('#caracteresRestantes').text(`${caracteresRestantes} caracteres restantes`);
+    $("#caracteresRestantes").text(
+      `${caracteresRestantes} caracteres restantes`
+    );
 
-        $('#comentarioTextArea').keyup(function () {
+    $("#comentarioTextArea").keyup(function () {
+      let longitud = $(this).val().length;
 
-            let longitud = $(this).val().length;
+      caracteresRestantes = maximoCaracteres - longitud;
 
-            caracteresRestantes = maximoCaracteres - longitud;
-            
-            if (caracteresRestantes >= 0)
-                $('#caracteresRestantes').text(`${caracteresRestantes} caracteres restantes`);
-            else 
-                $(this).val($(this).val().substr(0, maximoCaracteres));
-            
-        });
-        
-        $.get('/biblioteca/php/libro.php', {id: id}, function(data) {
-            
-            $('title').text(`${data.message.tituloLibro}`);
+      if (caracteresRestantes >= 0)
+        $("#caracteresRestantes").text(
+          `${caracteresRestantes} caracteres restantes`
+        );
+      else $(this).val($(this).val().substr(0, maximoCaracteres));
+    });
 
-            $('#informacion').html(`
+    $.get("/biblioteca/php/libro.php", { id: id }, function (data) {
+      libro = data.message;
+
+      $("title").text(`${data.message.tituloLibro}`);
+
+      $("#informacion").html(`
 
                 
                 <h1 class="text-center">${data.message.tituloLibro}</h1>
@@ -61,22 +61,19 @@ $(function () {
 
             
             `);
-            
-            if(data.status==500){
-                html='<h1>No existe ese libro</h1>';
-                $('#informacion').html(html);
-                $('#comentariosSeccion').remove();
-            }
+      mostrarLibrosAutor(libro);
 
-        })
+      if (data.status == 500) {
+        html = "<h1>No existe ese libro</h1>";
+        $("#informacion").html(html);
+        $("#comentariosSeccion").remove();
+      }
+    });
 
-        $.get('/biblioteca/php/comentarios.php', {id: id}, function(data) {
-
-            if (data.status == 200) {
-
-                let comentarios = data.message.map(element => {
-                    
-                    return `
+    $.get("/biblioteca/php/comentarios.php", { id: id }, function (data) {
+      if (data.status == 200) {
+        let comentarios = data.message.map((element) => {
+          return `
                     
                         <div id="comentarioCard">
                             <div id="comentarioHeader">
@@ -88,34 +85,48 @@ $(function () {
                         </div>
     
                     `;
-                });
-    
-                $('#comentarios').html(comentarios);
-            }
-
-
         });
 
-        $('#addComentario').click(function () {
-
-            let idUsuario = usuario.id;
-            let comentario = $('#comentarioTextArea').val();
-
-            insertarComentario(idUsuario, id, comentario);
-        });
-    }
-
-
-
-});
-
-function insertarComentario (idUsuario, idLibro, comentario) {
-
-    $.get('/biblioteca/php/añadirComentario.php', {idUsuario: idUsuario, idLibro: idLibro, comentario: comentario}, function (data) {
-        
-        if (data.status == 200) window.location.reload();
-        else alert('Error');
-
+        $("#comentarios").html(comentarios);
+      }
     });
 
+    $("#addComentario").click(function () {
+      let idUsuario = usuario.id;
+      let comentario = $("#comentarioTextArea").val();
+
+      insertarComentario(idUsuario, id, comentario);
+    });
+  }
+});
+
+function insertarComentario(idUsuario, idLibro, comentario) {
+  $.get(
+    "/biblioteca/php/añadirComentario.php",
+    { idUsuario: idUsuario, idLibro: idLibro, comentario: comentario },
+    function (data) {
+      if (data.status == 200) window.location.reload();
+      else alert("Error");
+    }
+  );
+}
+
+function mostrarLibrosAutor(libro) {
+  //Mostrar libros
+  $.get("/biblioteca/php/libros.php", function (data) {
+    libros = data.message;
+    html = "";
+    $("#librosAutor").html(html);
+    for (i = 0; i < data.message.length; i++) {
+      if (libros[i].autorLibro === libro.autorLibro && libros[i].idLibro != libro.idLibro ) {
+        html =
+          html +
+          `<a class="btn" href="verLibro.html?id=${data.message[i].idLibro}" title="Ver libro"><img src='${data.message[i].imagenLibro}' style='max-height:100px'></a>`;
+      }
+    }
+    if (data.status == 500) {
+      html = "";
+    }
+    $("#librosAutor").append(html);
+  });
 }
