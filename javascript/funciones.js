@@ -144,6 +144,10 @@ function obtenerLibrosPrestados() {
       `/biblioteca/php/librosPrestados.php`,
       { idUsuario: usuario.id },
       function (data) {
+        $("#inputBusqueda").hide();
+        $("#tipoBusqueda").hide();
+        $('#nuestrosLibros').removeClass('active');
+        $('#tusLibros').addClass('active');
         if (data.status === 200) {
           let tabla = `
                     <table class="table table-striped">

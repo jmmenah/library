@@ -43,7 +43,7 @@ $(document).ready(function () {
   });
 
   $("#nuestrosLibros").on("click", function () {
-    let html = `<table class="table">
+    let html = `<table class="table table-hover">
     <thead>
       <tr>
         <th scope="col">Imagen</th>
@@ -159,6 +159,8 @@ $(document).ready(function () {
   $("#nuestrosLibros").on("click", function () {
     mostrarLibros();
     $("#inputBusqueda").val("");
+    $("#inputBusqueda").show();
+    $("#tipoBusqueda").show();
   });
 
   $('#realizarCompra').click (function () {
