@@ -12,7 +12,7 @@ $password = htmlspecialchars($_POST['password']) ?? '';
 
 if (!empty($email) && !empty($password)) {
 
-    $stm = $pdo->prepare('SELECT * FROM Usuarios WHERE emailUsuario = :emailUsuario');
+    $stm = $pdo->prepare('SELECT * FROM usuarios WHERE emailUsuario = :emailUsuario');
 
     $stm->execute(array(
 

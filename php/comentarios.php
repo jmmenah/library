@@ -10,7 +10,7 @@ $id = htmlentities($_GET['id']) ?? '';
 if (!empty($id)) {
 
 
-    $stm = $pdo->prepare("SELECT emailUsuario, comentario FROM Comentarios INNER JOIN Libros ON Comentarios.idLibro = Libros.idLibro INNER JOIN Usuarios ON Comentarios.idUsuario = Usuarios.idUsuario WHERE Comentarios.idLibro = :idLibro");
+    $stm = $pdo->prepare("SELECT emailUsuario, comentario FROM comentarios INNER JOIN libros ON comentarios.idLibro = libros.idLibro INNER JOIN usuarios ON comentarios.idUsuario = usuarios.idUsuario WHERE comentarios.idLibro = :idLibro");
     
     $stm->execute(array(
         ':idLibro' => $id
@@ -19,7 +19,7 @@ if (!empty($id)) {
     $comentarios = $stm->fetchAll(PDO::FETCH_ASSOC);
 
     if ($comentarios) echo devolverMensaje($comentarios, 200);
-    else echo devolverMensaje('Aún no hay comentarios, anímate a dejar uno :)', 500);
+    else echo devolverMensaje('Aún no hay comentarios', 500);
 
 
 }else {

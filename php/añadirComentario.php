@@ -12,7 +12,7 @@ $comentario = htmlspecialchars($_GET['comentario']) ?? '';
 if (!empty($idLibro) && !empty($idUsuario) && !empty($comentario)) {
 
 
-    $stm = $pdo->prepare("INSERT INTO Comentarios VALUES (:idUsuario, :idLibro, :comentario)");
+    $stm = $pdo->prepare("INSERT INTO comentarios VALUES (:idUsuario, :idLibro, :comentario)");
     
     $stm->execute(array(
         ':idUsuario' => $idUsuario,

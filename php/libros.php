@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 require_once ('funciones.php');
 require_once ('db.php');
 
-$stm = $pdo->query('SELECT * FROM Libros ORDER BY idLibro DESC');
+$stm = $pdo->query('SELECT * FROM libros ORDER BY idLibro DESC');
 $stm->execute();
 
 $libros = $stm->fetchAll(PDO::FETCH_ASSOC);

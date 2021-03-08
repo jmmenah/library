@@ -14,7 +14,7 @@ if (!empty($idUsuario)) {
     $actual = date('Y-m-d');
     $fechaMulta = date("Y-m-d", strtotime ($actual . "+ 1 weeks"));
 
-    $stm = $pdo->prepare("UPDATE Usuarios SET multaUsuario = :multaUsuario, multaHasta = :multaHasta WHERE idUsuario = :idUsuario");
+    $stm = $pdo->prepare("UPDATE usuarios SET multaUsuario = :multaUsuario, multaHasta = :multaHasta WHERE idUsuario = :idUsuario");
 
     $stm->execute(array(
 

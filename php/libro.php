@@ -10,7 +10,7 @@ $id = htmlentities($_GET['id']) ?? '';
 if (!empty($id)) {
 
 
-    $stm = $pdo->prepare('SELECT * FROM Libros WHERE idLibro = :idLibro');
+    $stm = $pdo->prepare('SELECT * FROM libros WHERE idLibro = :idLibro');
     
     $stm->execute(array(
         ':idLibro' => $id

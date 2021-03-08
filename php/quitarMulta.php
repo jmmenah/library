@@ -11,7 +11,7 @@ $idUsuario = htmlspecialchars($_GET['idUsuario']) ?? '';
 
 if (!empty($idUsuario)) {
 
-    $stm = $pdo->prepare("UPDATE Usuarios SET multaUsuario = 0 WHERE idUsuario = :idUsuario");
+    $stm = $pdo->prepare("UPDATE usuarios SET multaUsuario = 0 WHERE idUsuario = :idUsuario");
 
     $stm->execute(array(
 

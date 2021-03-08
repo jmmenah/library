@@ -10,7 +10,7 @@ $idUsuario = htmlentities($_GET['idUsuario']) ?? '';
 if (!empty($idUsuario)) {
 
 
-    $stm = $pdo->prepare('SELECT * FROM Usuarios WHERE idUsuario = :idUsuario');
+    $stm = $pdo->prepare('SELECT * FROM usuarios WHERE idUsuario = :idUsuario');
     
     $stm->execute(array(
         ':idUsuario' => $idUsuario

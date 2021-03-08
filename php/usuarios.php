@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 require ('funciones.php');
 require_once ('db.php');
 
-$stm = $pdo->prepare('SELECT * FROM Usuarios');
+$stm = $pdo->prepare('SELECT * FROM usuarios');
 $stm->execute();
 
 if ($stm->rowCount() > 0) {
