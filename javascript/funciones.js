@@ -26,6 +26,7 @@ function mostrarLibros() {
           </button>
               </td>
           </tr>`;
+          
     }
     if (data.status == 500) {
       html = "";
@@ -101,16 +102,35 @@ function librosCoincidentes(busqueda, libro, puntuacion = false) {
 }
 
 function prestamo(idLibro) {
-  
-  $.get(
-    `/biblioteca/php/prestar.php`,
-    { idUsuario: usuario.id, idLibro: idLibro },
-    function (data) {
-      if (data.status == 200) {
-        window.location.reload();
-      }
-    }
-  );
+
+  if(tieneMulta){
+    alert('No puedes sacar mas libros, espera o paga la multa');
+  }else{
+    let prestado=false;
+    $.get(
+      `/biblioteca/php/librosPrestados.php`,
+      { idUsuario: usuario.id },function(data){
+        let librosPrestados=data.message;
+        if(librosPrestados.length >= 2 && data.status==200){
+            alert("No puedes sacar mas de 2 libros");
+        }else{
+          for(i=0;i<librosPrestados.length;i++){
+            if(librosPrestados[i].idLibro==idLibro){
+              alert("Ya tienes ese libro prestado")
+            }else{
+              $.get(
+                `/biblioteca/php/prestar.php`,
+                { idUsuario: usuario.id, idLibro: idLibro },
+                function (data) {
+                  if (data.status == 200) {
+                    window.location.reload();
+                  }
+                });
+            }
+          }    
+        }
+      });
+};
 }
 
 function obtenerLibrosPrestados() {
@@ -337,6 +357,9 @@ function gestionSesion() {
         $("#panelAdmin").remove();
         $(".botonEliminar").remove();
       }
+      if(tieneMulta === true){
+        $(".acciones").remove();
+      }
     }
 
     $("#cerrarSesion").click(function () {
@@ -410,8 +433,15 @@ function obtenerMulta() {
           $("#alertas").show();
           $("#alerta").show();
           $("#alerta").html(
-            `Tiene una multa por pasarse el plazo para devolver un libro. Su cuenta queda restringida y no podrá tomar prestados más libros hasta la fecha ${multaHasta} o hasta que no pague 10€. <button class="btn btn-warning" data-toggle="modal" data-target="#pagarMultaModal" data-toggle="tooltip" data-placement="right" title="Primero debe devolver todos los libros pasados de fecha" id="pagarMulta">Pagar</button>`
+            `Tiene una multa por pasarse el plazo para devolver un libro. No podrá tomar prestados más libros hasta la fecha ${multaHasta} o hasta que no pague 10€. Tiene que devolver todos los libros primero <button class="btn btn-warning" data-toggle="modal" data-target="#pagarMultaModal" data-toggle="tooltip" data-placement="right" title="Primero debe devolver todos los libros pasados de fecha" id="pagarMulta">Pagar</button>`
           );
+          $.get(
+            `/biblioteca/php/librosPrestados.php`,
+            { idUsuario: usuario.id },function(data){
+              if(data.status==200){
+                $("#pagarMulta").prop("disabled", true);
+              }
+            });
           $("#pagarMulta").prop("disabled", false);
           $(".botonPrestar").remove();
         }

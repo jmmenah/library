@@ -56,6 +56,7 @@ $(function () {
                 <h1 class="text-center">${data.message.tituloLibro}</h1>
                 <img src='${data.message.imagenLibro}' class='float-left m-3' style='max-height:200px'>
                 <h4>${data.message.autorLibro}</h4>
+                <p>Puntuación: ${data.message.puntuacionLibro}</p>
                 <p id="descripcion">${data.message.descripcionLibro}</p>
                 <p id="generos">${data.message.generoLibro}</p>
 
