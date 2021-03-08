@@ -14,8 +14,8 @@ function mostrarLibros() {
         html +
         `<tr>
               <td><a class="btn" href="verLibro.html?id=${data.message[i].idLibro}" title="Ver libro"><img src='${data.message[i].imagenLibro}' style='max-height:100px'></a></td>
-              <td>${data.message[i].tituloLibro}</td>
-              <td>${data.message[i].autorLibro}</td>
+              <td><a class="btn" href="verLibro.html?id=${data.message[i].idLibro}" title="Ver libro">${data.message[i].tituloLibro}</a></td>
+              <td><a class="btn" href="verLibro.html?id=${data.message[i].idLibro}" title="Ver libro">${data.message[i].autorLibro}</a></td>
               <td class='acciones'>
               <button class="btn botonEliminar" data-toggle="modal" data-id="${data.message[i].idLibro}" data-target="#modalEliminar">
               <i class="bi bi-trash-fill"></i>
@@ -116,18 +116,21 @@ function prestamo(idLibro) {
         }else{
           for(i=0;i<librosPrestados.length;i++){
             if(librosPrestados[i].idLibro==idLibro){
-              alert("Ya tienes ese libro prestado")
-            }else{
-              $.get(
-                `/biblioteca/php/prestar.php`,
-                { idUsuario: usuario.id, idLibro: idLibro },
-                function (data) {
-                  if (data.status == 200) {
-                    window.location.reload();
-                  }
-                });
+              prestado=true;
             }
-          }    
+          }
+          if(prestado){
+            alert("Ya tienes prestado ese libro");
+          }else{
+            $.get(
+              `/biblioteca/php/prestar.php`,
+              { idUsuario: usuario.id, idLibro: idLibro },
+              function (data) {
+                if (data.status == 200) {
+                  window.location.reload();
+                }
+              });
+          }   
         }
       });
 };
@@ -218,20 +221,35 @@ function diasRestantes(fecha) {
 }
 
 function eliminarLibro(id) {
-  
 
+  usuario = JSON.parse(window.localStorage.getItem("usuario"));
   if (usuario === null) {
     alert("Debes ser administrador para realizar esta acción");
   } else {
     if (usuario.rol == "administrador") {
       $.get(
-        `/biblioteca/php/eliminarLibro.php`,
-        { idLibro: id },
-        function (data) {
-          if (data.status == 200) window.location.reload();
-          else alert("Error al borrar");
-        }
-      );
+        `/biblioteca/php/librosPrestados.php`,
+        { idUsuario: usuario.id },function(data){
+          let librosPrestados=data.message;
+          let prestado;
+          for(i=0;i<librosPrestados.length;i++){
+            if(librosPrestados[i].idLibro==idLibro){
+              prestado=true;
+            }
+          }
+          if(prestado){
+            alert("No puedes eliminarlo,esta prestado");
+          }else{
+            $.get(
+              `/biblioteca/php/eliminarLibro.php`,
+              { idLibro: id },
+              function (data) {
+                if (data.status == 200) window.location.reload();
+                else alert("El libro está prestado");
+              }
+            );
+          }      
+          });
     } else {
       alert("Debes ser administrador para realizar esta acción");
     }
