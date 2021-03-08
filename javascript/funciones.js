@@ -73,19 +73,19 @@ function buscarLibro(libro) {
       html =
         html +
         `<tr>
-                  <td><img src='${librosResultado[i].imagenLibro}' style='max-height:100px'></td>
-                  <td>${librosResultado[i].tituloLibro}</td>
-                  <td>${librosResultado[i].autorLibro}</td>
-                  <td class='acciones'>
-              <button class="btn botonEliminar" data-toggle="modal" data-id="${librosResultado[i].idLibro}" data-target="#modalEliminar">
-              <i class="bi bi-trash-fill"></i>
-          </button>
-  
-          <button class="btn botonPrestar" name="${librosResultado[i].tituloLibro}" data-id="${librosResultado[i].idLibro}" title="Tomar prestado">
-            <i class="bi bi-book-fill"></i>
-          </button>
-              </td>
-              </tr>`;
+        <td><a class="btn" href="verLibro.html?id=${librosResultado[i].idLibro}" title="Ver libro"><img src='${librosResultado[i].imagenLibro}' style='max-height:100px'></a></td>
+        <td><a class="btn" href="verLibro.html?id=${librosResultado[i].idLibro}" title="Ver libro">${librosResultado[i].tituloLibro}</a></td>
+        <td><a class="btn" href="verLibro.html?id=${librosResultado[i].idLibro}" title="Ver libro">${librosResultado[i].autorLibro}</a></td>
+        <td class='acciones'>
+        <button class="btn botonEliminar" data-toggle="modal" data-id="${librosResultado[i].idLibro}" data-target="#modalEliminar">
+        <i class="bi bi-trash-fill"></i>
+    </button>
+
+    <button class="btn botonPrestar" name="${librosResultado[i].tituloLibro}" data-id="${librosResultado[i].idLibro}" title="Tomar prestado">
+      <i class="bi bi-book-fill"></i>
+    </button>
+        </td>
+    </tr>`;
     }
     html = html + "</tbody>";
     $("#libros").append(html);
